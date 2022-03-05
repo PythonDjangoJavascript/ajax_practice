@@ -8,5 +8,56 @@
 </head>
 <body>
     <h1>Hello world!</h1>
+    <button id="button">Button</button>
+    <br><br>
+    <div id="text"></div>
+<script>
+    // Event listener
+    document.getElementById("button").addEventListener("click", loadText)
+
+    function loadText(){
+        // create XHR object
+        var xhr = new XMLHttpRequest();
+        // console.log(xhr)
+
+        // open funciton takes 3 params (type, url/file, is_asynck)
+        xhr.open("GET", "sample.txt", true)
+        console.log("readyState: ", xhr.readyState)
+
+        // used for loaders
+        xhr.onprogress = function(){
+            console.log("readyState: ", xhr.readyState)
+        }
+        
+        // if request error occurred
+        xhr.onerror = function(){
+            console.log("request Error")
+        }
+
+        //xhr.onload = function(){
+        //    if(this.status === 200){
+        //        console.log(this.responseText)
+        //    }
+        //}
+
+        xhr.onreadystatechange = function(){
+            if(this.readyState === 4 && this.status === 200){
+                console.log(this.responseText)
+                document.getElementById("text").innerHTML = this.responseText
+            }else if(this.status === 404){
+                document.getElementById("text").innerHTML = "Not Found"
+            }
+        }
+
+        // sends request
+        xhr.send()
+    }
+
+    // 0	UNSENT	Client has been created. open() not called yet.
+    // 1	OPENED	open() has been called.
+    // 2	HEADERS_RECEIVED	send() has been called, and headers and status are available.
+    // 3	LOADING	Downloading; responseText holds partial data.
+    // 4	DONE	The operation is complete.
+</script>
 </body>
 </html>
