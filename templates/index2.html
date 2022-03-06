@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="button1">Button1</button>
+    <button id="button2">Button2</button>
+    <br>
+    <div id="user"></div>
+    <div id="users"></div>
+    <script>
+        document.getElementById("button1").addEventListener("click", loadUser)
+
+        function loadUser(){
+            var xhr = new XMLHttpRequest()
+            xhr.open("GET", "/user", true)
+
+            // onload
+            xhr.onload = function(){
+                if(this.status === 200){
+                    var user = JSON.parse(this.responseText)
+                    console.log(this.responseText)
+
+                    var output = `<ul>
+                        <li>Name: ${user.name}</li>
+                        <li>Country: ${user.country}</li>
+                        <li>Job: ${user.job}</li>
+                    </ul>
+                    `
+                    // append this ul into dom
+                    document.getElementById("user").innerHTML = output
+                }else{
+                    console.log("failed to fetch data")
+                }
+            }
+            
+            xhr.send()
+        }
+    </script>
+</body>
+</html>
